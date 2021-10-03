@@ -12,12 +12,18 @@ bool save(char* filename, uint8_t count, char** files) {
 			}
 			putc(FILE_START, file);
 			putc(FILE_START >> 8, file);
-			FILE* input = fopen(files[i], "rb");
-			char c;
-			while ((c = getc(input)) != EOF) {
-				putc(c, file);
+			FILE* input = fopen(files[i], "rb+");
+			if (input) {
+				char* c;
+				while ((c = getc(input)) != EOF) {
+					putc(c, file);
+				}
+				fclose(input);
 			}
-			fclose(input);
+			else {
+				printf("Error occuring reading an input file\n");
+				return false;
+			}
 		}
 		
 		fclose(file);
